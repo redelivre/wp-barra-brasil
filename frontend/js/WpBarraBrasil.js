@@ -7,7 +7,7 @@ var barra_brasil_element = jQuery(WpBarraBrasil.element_to_prepend);
 /** 
  * Hack for wp-divi theme
  */
-if(jQuery('#main-header').length > 0)
+if(jQuery('#main-header').length > 0 && (WpBarraBrasil.element_to_prepend == 'BODY' || WpBarraBrasil.element_to_prepend == 'body' ))
 {
 	barra_brasil_element = jQuery('#main-header');
 }

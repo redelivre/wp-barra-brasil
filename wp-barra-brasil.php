@@ -30,6 +30,7 @@ class WpBarraBrasil
 		add_action('wp_enqueue_scripts', array($this, 'js'));
 		add_action('wp_enqueue_scripts', array($this, 'css'));
 		add_action('wp_footer', array($this, 'footer'));
+		add_action( 'customize_register', array($this, 'customize_register'));
 	}
 	
 	/**
@@ -41,7 +42,7 @@ class WpBarraBrasil
 		wp_enqueue_script('BarraBrasil', '//barra.brasil.gov.br/barra.js', array('WpBarraBrasil'), '0.1.0', true);
 		
 		$data = array(
-			'element_to_prepend' => apply_filters('wp-barra-brasil-position-element', 'BODY')
+			'element_to_prepend' => apply_filters('wp-barra-brasil-position-element', get_theme_mod('WpBarraBrasilHeaderElement', 'BODY'))
 		);
 		
 		wp_localize_script('WpBarraBrasil', 'WpBarraBrasil', $data);
@@ -59,6 +60,53 @@ class WpBarraBrasil
 	{
 		echo '<div id="footer-brasil" class="'.get_theme_mod('WpBarraBrasilFooterColor', 'verde').'"></div>';
 	}
+	
+	/**
+	 * Add Customize Options and settings
+	 * @param WP_Customize_Manager $wp_customize Theme Customizer object.
+	 */
+	function customize_register( $wp_customize )
+	{
+		/*
+		 * 
+		 */
+		$wp_customize->add_section( 'WpBarraBrasil', array(
+			'title'    => __( 'Barra Brasil', 'WpBarraBrasil' ),
+			'priority' => 30,
+		) );
+	
+		// Element to append html content
+		$wp_customize->add_setting( 'WpBarraBrasilHeaderElement', array(
+			'default'     => 'BODY',
+			'capability'    => 'edit_theme_options',
+		) );
+		
+		$wp_customize->add_control( 'WpBarraBrasilHeaderElement', array(
+			'label'      => __( 'Elemento HTML onde deve se adionado o código da barra (para id inicie com "#" e classe CSS com ".")', 'WpBarraBrasil'),
+			'section'    => 'WpBarraBrasil',
+		) );
+		
+		$wp_customize->add_setting('WpBarraBrasilFooterColor', array(
+			'default'        => 'verde'
+		));
+		
+		$themecolors = array(
+			'verde' => __('Verde', 'WpBarraBrasil'),
+			'amarelo' => __('Amarelo', 'WpBarraBrasil'),
+			'azul' => __('Azul', 'WpBarraBrasil'),
+			'branco' => __('Branco', 'WpBarraBrasil'),
+		);
+		
+		$wp_customize->add_control( 'WpBarraBrasilFooterColor', array(
+			'settings' => 'WpBarraBrasilFooterColor',
+			'label'   => __('Selecione a cor do tema padrão do rodapé (footer)', 'WpBarraBrasil').':',
+			'section'  => 'WpBarraBrasil',
+			'type'    => 'select',
+			'choices' => $themecolors,
+		));
+	
+	}
+	
 }
 
 global $WpBarraBrasil;
