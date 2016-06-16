@@ -29,6 +29,7 @@ class WpBarraBrasil
 	{
 		add_action('wp_enqueue_scripts', array($this, 'js'));
 		add_action('wp_enqueue_scripts', array($this, 'css'));
+		add_action('wp_head', array($this, 'head'));
 		add_action('wp_footer', array($this, 'footer'));
 		add_action( 'customize_register', array($this, 'customize_register'));
 	}
@@ -59,6 +60,15 @@ class WpBarraBrasil
 	public function footer()
 	{
 		echo '<div id="footer-brasil" class="'.get_theme_mod('WpBarraBrasilFooterColor', 'verde').'"></div>';
+	}
+	
+	public function head()
+	{
+		$theme_opt = get_theme_mod('WpBarraBrasilServiceNumber', '');
+		if(!empty($theme_opt))
+		{
+			echo '<meta property="creator.productor" content="http://estruturaorganizacional.dados.gov.br/id/unidade-organizacional/'.$theme_opt.'">';
+		}
 	}
 	
 	/**
@@ -104,7 +114,15 @@ class WpBarraBrasil
 			'type'    => 'select',
 			'choices' => $themecolors,
 		));
-	
+		
+		$wp_customize->add_setting('WpBarraBrasilServiceNumber', array(
+			'default'        => ''
+		));
+		
+		$wp_customize->add_control( 'WpBarraBrasilServiceNumber', array(
+			'label'      => __( 'número correto do órgão no SIORG. Acesse o SIORG e procure pelo seu órgão.', 'WpBarraBrasil').' http://siorg.planejamento.gov.br',
+			'section'    => 'WpBarraBrasil',
+		) );
 	}
 	
 }
