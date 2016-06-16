@@ -28,6 +28,8 @@ class WpBarraBrasil
 	public function __construct()
 	{
 		add_action('wp_enqueue_scripts', array($this, 'js'));
+		add_action('wp_enqueue_scripts', array($this, 'css'));
+		add_action('wp_footer', array($this, 'footer'));
 	}
 	
 	/**
@@ -43,6 +45,19 @@ class WpBarraBrasil
 		);
 		
 		wp_localize_script('WpBarraBrasil', 'WpBarraBrasil', $data);
+	}
+	
+	/**
+	 * Enqueue css files
+	 */
+	public function css()
+	{
+		wp_enqueue_style('WpBarraBrasil', plugin_dir_url(__FILE__).'/frontend/css/WpBarraBrasil.css');
+	}
+	
+	public function footer()
+	{
+		echo '<div id="footer-brasil" class="'.get_theme_mod('WpBarraBrasilFooterColor', 'verde').'"></div>';
 	}
 }
 
