@@ -21,8 +21,30 @@
  * */
 
 // PHP 5.3 and later:
-// namespace WpBarraBrasil;
+namespace WpBarraBrasil;
 
-<?php
+class WpBarraBrasil
+{
+	public function __construct()
+	{
+		add_action('wp_enqueue_scripts', array($this, 'js'));
+	}
+	
+	/**
+	 * Enqueue JavaScritps files and configs
+	 */
+	public function js()
+	{
+		wp_enqueue_script('WpBarraBrasil', plugin_dir_url(__FILE__).'/frontend/js/WpBarraBrasil.js', array('jquery'), '0.1.0', true);
+		wp_enqueue_script('BarraBrasil', '//barra.brasil.gov.br/barra.js', array('WpBarraBrasil'), '0.1.0', true);
+		
+		$data = array(
+			'element_to_prepend' => apply_filters('wp-barra-brasil-position-element', 'BODY')
+		);
+		
+		wp_localize_script('WpBarraBrasil', 'WpBarraBrasil', $data);
+	}
+}
 
-?>
+global $WpBarraBrasil;
+$WpBarraBrasil = new WpBarraBrasil();
