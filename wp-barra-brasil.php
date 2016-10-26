@@ -109,7 +109,7 @@ class WpBarraBrasil
 		
 		$wp_customize->add_control( 'WpBarraBrasilFooterColor', array(
 			'settings' => 'WpBarraBrasilFooterColor',
-			'label'   => __('Selecione a cor do tema padrão do rodapé (footer)', 'WpBarraBrasil').':',
+			'label'   => __('Selecione a cor do seu tema para adequar ao padrão do rodapé (footer)', 'WpBarraBrasil').':',
 			'section'  => 'WpBarraBrasil',
 			'type'    => 'select',
 			'choices' => $themecolors,
